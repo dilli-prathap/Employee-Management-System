@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-init-script
+  namespace: employee-management
+data:
+  init.sql: |
+    CREATE TABLE IF NOT EXISTS employees (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(100) NOT NULL,
+      email VARCHAR(100) NOT NULL UNIQUE,
+      department VARCHAR(100),
+      position VARCHAR(100),
+      salary DECIMAL(10,2),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    INSERT INTO employees (name, email, department, position, salary) VALUES
+      ('Asha Menon', 'asha.menon@example.com', 'Engineering', 'Software Engineer', 65000.00),
+      ('Ravi Kumar', 'ravi.kumar@example.com', 'HR', 'HR Manager', 58000.00),
+      ('Priya Sharma', 'priya.sharma@example.com', 'Finance', 'Financial Analyst', 62000.00);
