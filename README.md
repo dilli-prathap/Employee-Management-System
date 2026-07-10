@@ -1,6 +1,9 @@
 # Employee Management System — 3-Tier Kubernetes App
 
-A simple 3-tier application deployed on Kubernetes:
+A **3-Tier Employee Management System** built using **HTML, CSS, JavaScript, Node.js, MySQL, Docker, and Kubernetes**.
+
+The project demonstrates how a modern web application is containerized using Docker and deployed on Kubernetes using Deployments, Services, ConfigMaps, Secrets, Persistent Volumes, and Namespaces.
+
 
 | Tier | Technology | Purpose |
 |---|---|---|
