@@ -8,21 +8,24 @@ A simple 3-tier application deployed on Kubernetes:
 | Application | Node.js + Express | REST API for employee CRUD operations |
 | Data | MySQL 8.0 | Stores employee records |
 
+## Project Architecture
+<img width="987" height="587" alt="Screenshot 2026-07-10 174744" src="https://github.com/user-attachments/assets/fb51eb88-d7ca-4f62-a948-7290e2f7fb70" />
+
 ## Project Structure
 
 ```
 employee-management-system/
-├── backend/            # Express API
+├── backend/           
 │   ├── server.js
 │   ├── package.json
 │   └── Dockerfile
-├── frontend/            # Nginx + static UI
+├── frontend/            
 │   ├── index.html
 │   ├── style.css
 │   ├── app.js
 │   ├── nginx.conf
 │   └── Dockerfile
-├── k8s/                 # Kubernetes manifests (apply in order)
+├── k8s/                 
 │   ├── 00-namespace.yaml
 │   ├── 01-mysql-secret.yaml
 │   ├── 02-mysql-configmap.yaml
@@ -36,63 +39,28 @@ employee-management-system/
 └── README.md
 ```
 
-## 1. Build the Docker images
+---
 
-From the project root:
+# REST API Endpoints
 
-```bash
-docker build -t employee-backend:latest ./backend
-docker build -t employee-frontend:latest ./frontend
-```
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | /api/employees | Get all employees |
+| GET | /api/employees/:id | Get employee |
+| POST | /api/employees | Add employee |
+| PUT | /api/employees/:id | Update employee |
+| DELETE | /api/employees/:id | Delete employee |
 
-### If using Minikube
-Load the images directly into the cluster's Docker daemon:
+---
+## FRONTEND:
+<img width="1861" height="990" alt="Screenshot 2026-07-10 171153" src="https://github.com/user-attachments/assets/a8ce1435-f1a6-4759-8952-7939dde08913" />
 
-```bash
-minikube image load employee-backend:latest
-minikube image load employee-frontend:latest
-```
+## EDIT:
+<img width="1796" height="982" alt="Screenshot 2026-07-10 171211" src="https://github.com/user-attachments/assets/8a4cf1a7-83e8-4d45-be62-52728cacbbb3" />
 
-### If using kind
-```bash
-kind load docker-image employee-backend:latest
-kind load docker-image employee-frontend:latest
-```
+## BACKEND Response:
+<img width="1298" height="107" alt="Screenshot 2026-07-10 171855" src="https://github.com/user-attachments/assets/541806c1-c8f6-49cd-86db-498d9dfc1655" />
 
-(If you're using a remote cluster, push both images to a registry — e.g. Docker Hub — and update the `image:` field in `06-backend-deployment.yaml` and `08-frontend-deployment.yaml` accordingly.)
-
-## 2. Deploy to Kubernetes
-
-Apply all manifests (the numeric prefixes keep them in the right order — namespace and secrets first, database, then backend, then frontend):
-
-```bash
-kubectl apply -f k8s/
-```
-
-Check that everything is running:
-
-```bash
-kubectl get pods -n employee-management
-kubectl get svc -n employee-management
-```
-
-Wait until all pods show `Running` and `1/1` (or `2/2`) ready. The MySQL pod needs to be ready before the backend can connect — the backend has built-in retry logic, so it will keep retrying until MySQL is available.
-
-## 3. Access the app
-
-### Minikube
-```bash
-minikube service frontend-service -n employee-management
-```
-
-### kind / other clusters
-Port-forward the frontend service:
-```bash
-kubectl port-forward -n employee-management svc/frontend-service 8080:80
-```
-Then open **http://localhost:8080**
-
-The frontend Service is also exposed as a `NodePort` on port `30080`, so on clusters with direct node access you can hit `http://<node-ip>:30080`.
 
 ## How the tiers talk to each other
 
@@ -119,9 +87,29 @@ MySQL runs as a single replica (a `StatefulSet` with replication would be needed
 kubectl delete namespace employee-management
 ```
 
-## Notes on "simply"
+# 🎯 Learning Outcomes
 
-This is intentionally minimal so the Kubernetes concepts stay clear:
-- No Ingress controller (uses NodePort instead) — add one if you want a real domain/TLS.
-- Secrets use plain `stringData` for readability — in production, use a secrets manager or sealed secrets.
-- No HorizontalPodAutoscaler or resource limits — add `resources:` blocks and an HPA for production use.
+- Three-Tier Architecture
+- Docker Containerization
+- Kubernetes Deployments
+- Service Discovery
+- ConfigMaps
+- Secrets
+- Persistent Storage
+- REST API Development
+- MySQL Integration
+- Kubernetes Networking
+
+---
+
+# 👨‍💻 Author
+
+**Dilli Prathap**
+
+B.Tech CSE (IoT)
+
+Cloud | DevOps | Kubernetes | AWS Enthusiast
+
+---
+
+# ⭐ If you found this project useful, please give it a star.
